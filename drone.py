@@ -11,6 +11,7 @@ s.bind(('',port))
 print('waiting on port:', port)
 
 s.sendto('command'.encode('utf-8'), droneAddress)
+s.sendto('streamon'.encode('utf-8'), droneAddress)
 
 flying = True
 
@@ -20,6 +21,7 @@ while flying:
 	if(x == 'exit'):
 		flying = False
 		s.sendto('land'.encode('utf-8'), droneAddress)
+		s.sendto('streamoff'.encode('utf-8'), droneAddress)
 		pass
 	else:
 		response = 'error'
@@ -29,6 +31,10 @@ while flying:
 			data, addr = s.recvfrom(1024)
 			response = data
 			print(response)
+
+cap.release()
+cv2.destroyAllWindows()
+s.close()
 
 # while 1:
 # 	data, addr = s.recvfrom(1024)
